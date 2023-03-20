@@ -1,33 +1,24 @@
-import { useEffect, useRef } from 'react'
-
-const STORAGE_KEY = 'mini-editor:value'
+import { useRef, useState } from 'react'
+import { useAutoSave } from './hooks/useAutoSave'
+import { useEditingSupport } from './hooks/useEditingSupport'
+import { useMarkdown } from './hooks/useMarkdown'
 
 export function App() {
   const textAreaRef = useRef<HTMLTextAreaElement>(null!)
+  const [html, setHtml] = useState('')
 
-  useEffect(() => {
-    if (textAreaRef.current) {
-      textAreaRef.current.value = localStorage.getItem(STORAGE_KEY) || ''
-    }
-  }, [])
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (textAreaRef.current) {
-        localStorage.setItem(STORAGE_KEY, textAreaRef.current.value)
-      }
-    }, 500)
-    return () => clearInterval(timer)
-  }, [])
+  useAutoSave(textAreaRef)
+  useMarkdown(textAreaRef, setHtml)
+  useEditingSupport(textAreaRef)
 
   return (
-    <div className="w-screen h-screen">
-      <h1 className="text-3xl font-bold underline">Mini Editor</h1>
-      <textarea
-        ref={textAreaRef}
-        autoFocus
-        className="w-full h-full p-1"
-      ></textarea>
+    <div className="w-screen h-screen flex flex-col">
+      <div className="flex-1 flex row">
+        <textarea ref={textAreaRef} autoFocus className="h-full w-1/2 p-1" />
+        <div className="markdown-body  w-1/2 p-1">
+          <div dangerouslySetInnerHTML={{ __html: html }} />
+        </div>
+      </div>
     </div>
   )
 }
