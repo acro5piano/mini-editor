@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { markdown } from '@codemirror/lang-markdown'
+import { EditorView } from '@codemirror/view'
 
 import { useAutoSave, STORAGE_KEY } from './hooks/useAutoSave'
 import { useMarkdown } from './hooks/useMarkdown'
@@ -25,9 +26,10 @@ export function App() {
           <CodeMirror
             value={rawText.current}
             height="100vh"
-            extensions={[markdown()]}
+            extensions={[markdown(), EditorView.lineWrapping]}
             onChange={onChange}
             theme="dark"
+            indentWithTab
             autoFocus
           />
         </div>
