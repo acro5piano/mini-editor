@@ -1,7 +1,7 @@
 import { useEffect, MutableRefObject } from 'react'
 import markdown from 'markdown-it'
 
-const md = markdown()
+const md = markdown({ html: true })
 
 export const useMarkdown = (
   textRef: MutableRefObject<string>,
