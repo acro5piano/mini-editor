@@ -2,20 +2,18 @@ import { useEffect, MutableRefObject } from 'react'
 
 export const STORAGE_KEY = 'mini-editor:value'
 
-export const useAutoSave = (
-  textAreaRef: MutableRefObject<HTMLTextAreaElement>,
-) => {
+export const useAutoSave = (textRef: MutableRefObject<string>) => {
   useEffect(() => {
-    if (textAreaRef.current) {
-      textAreaRef.current.value = localStorage.getItem(STORAGE_KEY) || ''
+    if (textRef.current) {
+      textRef.current = localStorage.getItem(STORAGE_KEY) || ''
     }
   }, [])
   useEffect(() => {
     const timer = setInterval(() => {
-      if (textAreaRef.current.value) {
-        localStorage.setItem(STORAGE_KEY, textAreaRef.current.value)
+      if (textRef.current) {
+        localStorage.setItem(STORAGE_KEY, textRef.current)
       }
     }, 500)
     return () => clearInterval(timer)
-  }, [textAreaRef.current])
+  }, [textRef.current])
 }

@@ -1,23 +1,40 @@
-import { useRef, useState } from 'react'
-import { useAutoSave } from './hooks/useAutoSave'
-import { useEditingSupport } from './hooks/useEditingSupport'
+import { useCallback, useRef, useState } from 'react'
+import CodeMirror from '@uiw/react-codemirror'
+import { markdown } from '@codemirror/lang-markdown'
+
+import { useAutoSave, STORAGE_KEY } from './hooks/useAutoSave'
 import { useMarkdown } from './hooks/useMarkdown'
 
+const defaultValue = localStorage.getItem(STORAGE_KEY) || ''
+
 export function App() {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null!)
+  const rawText = useRef(defaultValue)
   const [html, setHtml] = useState('')
 
-  useAutoSave(textAreaRef)
-  useMarkdown(textAreaRef, setHtml)
-  useEditingSupport(textAreaRef)
+  const onChange = useCallback((value: string) => {
+    rawText.current = value
+  }, [])
+
+  useAutoSave(rawText)
+  useMarkdown(rawText, setHtml)
 
   return (
-    <div className="w-screen h-screen flex flex-col">
-      <div className="flex-1 flex row">
-        <textarea ref={textAreaRef} autoFocus className="h-full w-1/2 p-1" />
-        <div className="markdown-body  w-1/2 p-1">
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+    <div className="w-screen h-screen flex flex-col overflow-hidden">
+      <div className="h-full flex-1 flex row">
+        <div className="w-1/2">
+          <CodeMirror
+            value={rawText.current}
+            height="100vh"
+            extensions={[markdown()]}
+            onChange={onChange}
+            theme="dark"
+            autoFocus
+          />
         </div>
+        <div
+          className="markdown-body w-1/2 p-3 overflow-y-scroll"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
       </div>
     </div>
   )

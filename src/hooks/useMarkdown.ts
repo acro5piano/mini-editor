@@ -4,15 +4,15 @@ import markdown from 'markdown-it'
 const md = markdown()
 
 export const useMarkdown = (
-  textAreaRef: MutableRefObject<HTMLTextAreaElement>,
+  textRef: MutableRefObject<string>,
   onChange: (html: string) => void,
 ) => {
   useEffect(() => {
     const timer = setInterval(() => {
-      if (textAreaRef.current) {
-        onChange(md.render(textAreaRef.current.value))
+      if (textRef.current) {
+        onChange(md.render(textRef.current))
       }
     }, 500)
     return () => clearInterval(timer)
-  }, [textAreaRef.current])
+  }, [textRef.current])
 }
