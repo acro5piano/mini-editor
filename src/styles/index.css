@@ -20,12 +20,20 @@ body,
   -webkit-text-size-adjust: 100%;
 }
 
+* {
+  box-sizing: content-box;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .markdown-body ol li {
   list-style-type: decimal;
+}
+
+.markdown-body li {
+  list-style-type: disc;
 }
 
 .markdown-body img {

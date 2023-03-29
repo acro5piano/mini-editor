@@ -13,6 +13,7 @@
     "@codemirror/state": "^6.2.0",
     "@codemirror/view": "^6.9.3",
     "@uiw/react-codemirror": "^4.19.11",
+    "clsx": "^1.2.1",
     "markdown-it": "^13.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
