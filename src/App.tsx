@@ -15,7 +15,7 @@ export function App() {
   const [html, setHtml] = useState('')
 
   const [lineWrapping, setLineWrapping] = useState(true)
-  const [showPreview, setShowPreview] = useState(true)
+  const [showPreview, setShowPreview] = useState(false)
 
   const onChange = useCallback((value: string) => {
     rawText.current = value
